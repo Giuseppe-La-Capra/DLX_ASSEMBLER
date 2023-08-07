@@ -7,6 +7,7 @@
 #include <list>
 #include <map>
 #include <regex>
+#include <cmath>
 #include "isa.h"
 
 
