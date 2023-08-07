@@ -124,7 +124,7 @@ int dependencies_solver (std::stringstream & error_stream, std::fstream & proc_f
                     //resolve address
                     address = address - pc;
                     solved_file << operation << " ";
-                    if (-2^25 <= address && address <= (2^25 -1)){
+                    if ((-pow(2.0,25)) <= address && address <= (pow(2.0,25) -1)){
                         solved_file << address;
                     } else {
                         error_stream << "error, label: " << label << " has offset " << address << " at row " << pc-1 << " which is too long on 26 bits" << std::endl;
