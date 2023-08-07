@@ -9,6 +9,7 @@
 #include <map>
 #include <regex>
 #include <exception>
+#include <cmath>
 #include "isa.h"
 
 int assembler (std::stringstream & error_stream, std::fstream & input_file, std::fstream & output_file);
