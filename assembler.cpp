@@ -149,12 +149,12 @@ std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::
     }
     std::bitset<5> rs1(source1),rs2(source2),rd(dest);
 
-    if (type = 'r') {
+    if (type == 'r') {
         ss << opcode.to_string() << rs1.to_string() << rs2.to_string() << rd.to_string() << func.to_string();
         std::bitset<32> fin(ss.str());
         ss.str("");
         ss << std::hex << std::setw(8) << std::setfill('0') << fin.to_ulong();
-    } else if (type = 'i') {
+    } else if (type == 'i') {
         if (-2^15 <= immediate && immediate <= (2^15 -1)){
             std::bitset<16> immediate_bitset(immediate);
             ss << opcode.to_string() << rs1.to_string() << rd.to_string() << immediate_bitset.to_string();
@@ -164,7 +164,7 @@ std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::
         } else {
             throw std::invalid_argument("argument immediate is invalid, it's outside of range");
         }
-    } else if (type = 'j') {
+    } else if (type == 'j') {
         if (-2^25 <= immediate && immediate <= (2^25 -1)){
             std::bitset<26> immediate_bitset(immediate);
             ss << opcode.to_string() << immediate_bitset.to_string();
