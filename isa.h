@@ -25,6 +25,8 @@
 #define LOAD_IMMEDIATE_FORMAT "r%u,%d(r%u)"
 #define GENERIC_JUMP "-*[[:d:]]+"
 #define GENERIC_JUMP_FORMAT "%d"
+#define NOP_IMMEDIATE ""
+#define NOP_IMMEDIATE_FORMAT ""
 
 #define FORMATS_SIZE 5
 
