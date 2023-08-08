@@ -109,6 +109,9 @@ static std::string parse (const std::tuple<std::string,char,std::bitset<6>,std::
     case hasher(GENERIC_JUMP_FORMAT):
         sscanf(buffer.c_str(),format.c_str(),&immediate);
         break;
+    case hasher(BRANCH_IMMEDIATE_FORMAT):
+        sscanf(buffer.c_str(),format.c_str(),&source1,&immediate);
+        break;
     case hasher(NOP_IMMEDIATE_FORMAT):
         //do nothing
         break;
