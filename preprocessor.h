@@ -7,8 +7,8 @@
 #include <list>
 #include <map>
 #include <regex>
-#include <cmath>
 #include "isa.h"
+#include <cmath>
 
 
 int preproc (std::stringstream & error_stream, std::fstream & file, std::fstream & processed_tmp_file, std::map<std::string,int> &labels);

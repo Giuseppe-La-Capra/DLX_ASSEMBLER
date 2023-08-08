@@ -82,7 +82,7 @@ int dependencies_solver (std::stringstream & error_stream, std::fstream & proc_f
     }
     std::string buffer;
     
-    std::smatch m;
+    
     int return_value = 0;
     std::string label,operation;
     int pc = 0;
@@ -95,12 +95,21 @@ int dependencies_solver (std::stringstream & error_stream, std::fstream & proc_f
         bool catch_flag = false;
 
 
-        if (!buffer.empty() && std::regex_match(buffer,std::regex("^([^[:space:]]+)\\s([_[:alpha:]]+)$"))){
+        if (!buffer.empty() && std::regex_match(buffer,std::regex("^([^[:space:]]+)\\s([^[:space:]]+)$"))){
 
-            label = std::regex_replace(buffer,std::regex("^([^[:space:]]+)\\s([_[:alpha:]]+)$"),"$2");
-            operation = std::regex_replace(buffer,std::regex("^([^[:space:]]+)\\s([_[:alpha:]]+)$"),"$1");
+            label = std::regex_replace(buffer,std::regex("^([^[:space:]]+)\\s([^[:space:]]+)$"),"$2");
+            operation = std::regex_replace(buffer,std::regex("^([^[:space:]]+)\\s([^[:space:]]+)$"),"$1");
 
-            //try to find a match
+            
+            //find a match for a label
+            std::smatch ma;
+            std::regex_search(label,ma,std::regex("[_[:alpha:]]{2,}"));
+            //get the label and prefix, suffix
+            std::string test = label;
+            
+            std::string prefix = ma.prefix().str();
+            std::string suffix = ma.suffix().str();
+            label = ma[0];
             int address;
             catch_flag = false;
             if (!label.empty()){
@@ -123,9 +132,9 @@ int dependencies_solver (std::stringstream & error_stream, std::fstream & proc_f
                 if (!catch_flag){
                     //resolve address
                     address = address - pc;
-                    solved_file << operation << " ";
+                    solved_file << operation << " " << prefix;
                     if ((-pow(2.0,25)) <= address && address <= (pow(2.0,25) -1)){
-                        solved_file << address;
+                        solved_file << address << suffix;
                     } else {
                         error_stream << "error, label: " << label << " has offset " << address << " at row " << pc-1 << " which is too long on 26 bits" << std::endl;
                         return_value = -1;
