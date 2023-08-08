@@ -28,7 +28,7 @@ std::list<std::tuple<std::string,char,std::bitset<6>,std::bitset<11>,std::string
     {"slli", IMMEDIATE, std::bitset<6>("010100"), std::bitset<11>(IMMEDIATE_OP), GENERIC_IMMEDIATE, GENERIC_IMMEDIATE_FORMAT},
     {"snei", IMMEDIATE, std::bitset<6>("011001"), std::bitset<11>(IMMEDIATE_OP), GENERIC_IMMEDIATE, GENERIC_IMMEDIATE_FORMAT},
     {"srli", IMMEDIATE, std::bitset<6>("010110"), std::bitset<11>(IMMEDIATE_OP), GENERIC_IMMEDIATE, GENERIC_IMMEDIATE_FORMAT},
-    {"nop", IMMEDIATE, std::bitset<6>("010101"), std::bitset<11>(IMMEDIATE_OP), GENERIC_IMMEDIATE, GENERIC_IMMEDIATE_FORMAT},
+    {"nop", IMMEDIATE, std::bitset<6>("010101"), std::bitset<11>(IMMEDIATE_OP), NOP_IMMEDIATE, NOP_IMMEDIATE_FORMAT},
 
     {"j", JUMP, std::bitset<6>("000010"), std::bitset<11>(JUMP_OP), GENERIC_JUMP, GENERIC_JUMP_FORMAT},
     {"jal", JUMP, std::bitset<6>("000011"), std::bitset<11>(JUMP_OP), GENERIC_JUMP, GENERIC_JUMP_FORMAT}
