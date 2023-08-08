@@ -28,7 +28,7 @@
 #define NOP_IMMEDIATE ""
 #define NOP_IMMEDIATE_FORMAT ""
 
-#define FORMATS_SIZE 5
+#define FORMATS_SIZE 6
 
 //defined as label,type,opcode,func,argument format
 extern std::list<std::tuple<std::string,char,std::bitset<6>,std::bitset<11>,std::string,std::string>> ISA;
@@ -38,7 +38,8 @@ constexpr std::size_t hasher(std::string_view s){
     GENERIC_IMMEDIATE_FORMAT,
     LOAD_IMMEDIATE_FORMAT,
     STORE_IMMEDIATE_FORMAT,
-    GENERIC_JUMP_FORMAT
+    GENERIC_JUMP_FORMAT,
+    NOP_IMMEDIATE_FORMAT
     };
     for (size_t i = 0; i < FORMATS_SIZE; i++)
     {
