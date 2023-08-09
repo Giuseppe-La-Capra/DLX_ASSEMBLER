@@ -8,33 +8,41 @@
 using namespace std;
 
 
+void convert(const string & original_filename) noexcept;
+
 int main(int argc, char ** argv)
 {
     string original_filename;
+    char selection;
+
+    while (true)
+    {
+        cout << "enter filename to start conversion: ";
+        getline(cin,original_filename);
+        convert(original_filename);
+        cout << "continue with a new conversion?(y/n): ";
+        cin >> selection;
+        cin.ignore();
+        if (selection != 'y'){
+            break;
+        }
+    }
+    
+    
+    return 0;
+}
+
+
+void convert(const string & original_filename) noexcept{
     string temp_filename = "temp_file.txt";
     string temp_filename2 = "temp_file2.txt";
     string output_filename = "output.asm.mem";
     std::map<std::string,int> labels;
 
-    if (argc == 2) {
-        original_filename.assign(argv[1]);
-
-        if (!regex_match(original_filename, regex("^[\\\\/:_.[:alnum:]]+$"), regex_constants::match_any)){
-            cerr << original_filename << " is not a valid filename" << endl;
-            return -1;
-        }
-    } else {
-        cerr << "error, number of inputs not right" << endl;
-        return -1;
-    }
-
-
-
-
     fstream original_file(original_filename, ios_base::in);
     if (!original_file.is_open()){
         cerr << "error, could not open file: " << original_filename << endl;
-        return -1;
+        return;
     }
 
     fstream temp_file(temp_filename, ios_base::out | ios_base::trunc);
@@ -46,7 +54,7 @@ int main(int argc, char ** argv)
         temp_file.close();
         output_file.close();
         original_file.close();
-        return -1;
+        return;
     }
 
 
@@ -60,7 +68,7 @@ int main(int argc, char ** argv)
         temp_file.close();
         output_file.close();
         original_file.close();
-        return return_preproc;
+        return;
     }
 
     temp_file.close();
@@ -75,7 +83,7 @@ int main(int argc, char ** argv)
         temp_file.close();
         output_file.close();
         original_file.close();
-        return return_preproc;
+        return;
     }
 
     temp_file2.close();
@@ -94,5 +102,4 @@ int main(int argc, char ** argv)
     temp_file.close();
     output_file.close();
     original_file.close();
-    return return_preproc;
 }
