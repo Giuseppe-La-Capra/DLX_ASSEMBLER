@@ -7,4 +7,4 @@ instruction format:
 - JTYPE: opcode,immediate (6,26 bits)
 
 To customize the ISA you can modify the isa.cpp source file to include more instructions.  
-To run the program simply run it with one argument specifing the path to the asm file.
+A release of the current program is available as a pre-release in the release section.  
