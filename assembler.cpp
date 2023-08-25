@@ -8,7 +8,7 @@ static std::string parse (const std::tuple<std::string,char,std::bitset<6>,std::
 
 
 std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::bitset<11> & func,
-    const unsigned int & source1, const unsigned int & source2, const unsigned int & dest, const int & immediate);
+    const unsigned int & source1, const unsigned int & source2, const unsigned int & dest, const long int & immediate);
 
 int assembler (std::stringstream & error_stream, std::fstream & input_file, std::fstream & output_file) {
     int return_value = 0;
@@ -89,35 +89,44 @@ static std::string parse (const std::tuple<std::string,char,std::bitset<6>,std::
     std::string format = std::get<0>(command) + " " + std::get<5>(command);
     char type = std::get<1>(command);
     unsigned int dest = 0,source1 = 0,source2 = 0; //registers
-    int immediate = 0;
+    long int immediate = 0;
 
     std::string parsed;
     switch (hasher(std::get<5>(command)))
     {
-    case hasher(GENERIC_RTYPE_FORMAT):
-        sscanf(buffer.c_str(),format.c_str(),&dest,&source1,&source2);
-        break;
-    case hasher(GENERIC_IMMEDIATE_FORMAT):
-        sscanf(buffer.c_str(),format.c_str(),&dest,&source1,&immediate);
-        break;
-    case hasher(STORE_IMMEDIATE_FORMAT):
-        sscanf(buffer.c_str(),format.c_str(),&immediate,&source1,&dest);
-        break;
-    case hasher(LOAD_IMMEDIATE_FORMAT):
-        sscanf(buffer.c_str(),format.c_str(),&dest,&immediate,&source1);
-        break;
-    case hasher(GENERIC_JUMP_FORMAT):
-        sscanf(buffer.c_str(),format.c_str(),&immediate);
-        break;
-    case hasher(BRANCH_IMMEDIATE_FORMAT):
-        sscanf(buffer.c_str(),format.c_str(),&source1,&immediate);
-        break;
-    case hasher(NOP_IMMEDIATE_FORMAT):
-        //do nothing
-        break;
-    default:
-        throw std::invalid_argument("internal error parsing: " + buffer );
-        break;
+        case hasher(GENERIC_RTYPE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&dest,&source1,&source2);
+            break;
+        case hasher(GENERIC_IMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&dest,&source1,&immediate);
+            break;
+        case hasher(STORE_IMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&immediate,&source1,&dest);
+            break;
+        case hasher(LOAD_IMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&dest,&immediate,&source1);
+            break;
+        case hasher(GENERIC_JUMP_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&immediate);
+            break;
+        case hasher(BRANCH_IMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(), format.c_str(), &source1, &immediate);
+            break;
+        case hasher(GENERIC_UIMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&dest,&source1,&immediate);
+            break;
+        case hasher(STORE_UIMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&immediate,&source1,&dest);
+            break;
+        case hasher(LOAD_UIMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&dest,&immediate,&source1);
+            break;
+        case hasher(NOP_IMMEDIATE_FORMAT):
+            //do nothing
+            break;
+        default:
+            throw std::invalid_argument("internal error parsing: " + buffer );
+            break;
     }
     try
     {
@@ -132,7 +141,7 @@ static std::string parse (const std::tuple<std::string,char,std::bitset<6>,std::
 }
 
 std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::bitset<11> & func,
-    const unsigned int & source1, const unsigned int & source2, const unsigned int & dest, const int & immediate) {
+    const unsigned int & source1, const unsigned int & source2, const unsigned int & dest, const long int & immediate) {
     std::stringstream ss;
 
     std::stringstream error;
@@ -155,12 +164,12 @@ std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::
     }
     std::bitset<5> rs1(source1),rs2(source2),rd(dest);
 
-    if (type == 'r') {
+    if (type == RTYPE) {
         ss << opcode.to_string() << rs1.to_string() << rs2.to_string() << rd.to_string() << func.to_string();
         std::bitset<32> fin(ss.str());
         ss.str("");
         ss << std::hex << std::setw(8) << std::setfill('0') << fin.to_ulong();
-    } else if (type == 'i') {
+    } else if (type == IMMEDIATE) {
         if ((-pow(2.0,15)) <= immediate && immediate <= (pow(2.0,15) -1)){
             std::bitset<16> immediate_bitset(immediate);
             ss << opcode.to_string() << rs1.to_string() << rd.to_string() << immediate_bitset.to_string();
@@ -170,8 +179,8 @@ std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::
         } else {
             throw std::invalid_argument("argument immediate is invalid, it's outside of range");
         }
-    } else if (type == 'j') {
-        if ((-pow(2.0,25)) <= immediate && immediate <= (pow(2.0,25) -1)){
+    } else if (type == JUMP) {
+        if ((-pow(2.0, 25)) <= immediate && immediate <= (pow(2.0, 25) - 1)) {
             std::bitset<26> immediate_bitset(immediate);
             ss << opcode.to_string() << immediate_bitset.to_string();
             std::bitset<32> fin(ss.str());
@@ -179,6 +188,16 @@ std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::
             ss << std::hex << std::setw(8) << std::setfill('0') << fin.to_ulong();
         } else {
             throw std::invalid_argument("argument immediate is invalid, it's outside of range");
+        }
+    } else if (type == UIMMEDIATE) {
+        if (immediate <= (pow(2.0, 26) - 1) && immediate >= 0) {
+            std::bitset<26> immediate_bitset(immediate);
+            ss << opcode.to_string() << immediate_bitset.to_string();
+            std::bitset<32> fin(ss.str());
+            ss.str("");
+            ss << std::hex << std::setw(8) << std::setfill('0') << fin.to_ulong();
+        } else {
+            throw std::invalid_argument("argument immediate is invalid, it's outside of range or not unsigned");
         }
     } else {
         throw std::invalid_argument("internal error, instruction type is not defined");

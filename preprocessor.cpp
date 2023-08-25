@@ -22,7 +22,7 @@ int preproc (std::stringstream & error_stream, std::fstream & file, std::fstream
     unsigned long int proc_row = 0;
     std::smatch m;
     std::regex label("^\\s*([[:alpha:]_]+):\\s*$");
-    std::regex comment("--.*");
+    std::regex comment(";.*");
     std::regex instr("^[-,#()[:alnum:][:space:]]+$");
     int return_value = 0;
     do {
