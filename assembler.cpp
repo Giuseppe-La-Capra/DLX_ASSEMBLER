@@ -190,9 +190,9 @@ std::string compute_bitset(char type, const std::bitset<6> & opcode, const std::
             throw std::invalid_argument("argument immediate is invalid, it's outside of range");
         }
     } else if (type == UIMMEDIATE) {
-        if (immediate <= (pow(2.0, 26) - 1) && immediate >= 0) {
-            std::bitset<26> immediate_bitset(immediate);
-            ss << opcode.to_string() << immediate_bitset.to_string();
+        if (immediate <= (pow(2.0, 16) - 1) && immediate >= 0) {
+            std::bitset<16> immediate_bitset((unsigned long)immediate);
+            ss << opcode.to_string() << rs1.to_string() << rd.to_string() << immediate_bitset.to_string();
             std::bitset<32> fin(ss.str());
             ss.str("");
             ss << std::hex << std::setw(8) << std::setfill('0') << fin.to_ulong();
