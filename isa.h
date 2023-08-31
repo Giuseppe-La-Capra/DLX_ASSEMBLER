@@ -21,10 +21,12 @@
 
 #define GENERIC_RTYPE "(r[[:d:]]+,){2}r[[:d:]]+"
 #define GENERIC_RTYPE_FORMAT "r%u,r%u,r%u"
-#define GENERIC_IMMEDIATE "(r[[:d:]]+,){2}#-?[[:d:]]+"
-#define GENERIC_IMMEDIATE_FORMAT "r%u,r%u,#%d"
-#define GENERIC_UIMMEDIATE "(r[[:d:]]+,){2}#[[:d:]]+"
-#define GENERIC_UIMMEDIATE_FORMAT "r%u,r%u,#%u"
+#define NOT_RTYPE "r[[:d:]]+,r[[:d:]]+"
+#define NOT_RTYPE_FORMAT "r%u,r%u"
+#define GENERIC_IMMEDIATE "(r[[:d:]]+,){2}-?[[:d:]]+"
+#define GENERIC_IMMEDIATE_FORMAT "r%u,r%u,%d"
+#define GENERIC_UIMMEDIATE "(r[[:d:]]+,){2}[[:d:]]+"
+#define GENERIC_UIMMEDIATE_FORMAT "r%u,r%u,%u"
 #define STORE_IMMEDIATE "-?[[:d:]]+\\(r[[:d:]]+\\),r[[:d:]]+"
 #define STORE_IMMEDIATE_FORMAT "%d(r%u),r%u"
 #define LOAD_IMMEDIATE "r[[:d:]]+,-?[[:d:]]+\\(r[[:d:]]+\\)"
@@ -40,7 +42,7 @@
 #define BRANCH_IMMEDIATE "(r[[:d:]]+,)-?[[:d:]]+"
 #define BRANCH_IMMEDIATE_FORMAT "r%u,%d"
 
-#define FORMATS_SIZE 10
+#define FORMATS_SIZE 11
 
 //defined as label,type,opcode,func,argument format
 extern std::list<std::tuple<std::string,char,std::bitset<6>,std::bitset<11>,std::string,std::string>> ISA;
@@ -55,7 +57,8 @@ constexpr std::size_t hasher(std::string_view s){
     BRANCH_IMMEDIATE_FORMAT,
     GENERIC_UIMMEDIATE_FORMAT,
     STORE_UIMMEDIATE_FORMAT,
-    LOAD_UIMMEDIATE_FORMAT
+    LOAD_UIMMEDIATE_FORMAT,
+    NOT_RTYPE_FORMAT
     };
     for (size_t i = 0; i < FORMATS_SIZE; i++)
     {

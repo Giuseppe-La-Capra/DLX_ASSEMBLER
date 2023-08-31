@@ -13,7 +13,7 @@ std::list<std::tuple<std::string,char,std::bitset<6>,std::bitset<11>,std::string
 	{"nor", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001000"), GENERIC_RTYPE, GENERIC_RTYPE_FORMAT},
     {"xor", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001001"), GENERIC_RTYPE, GENERIC_RTYPE_FORMAT},
 	{"xnor", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001010"), GENERIC_RTYPE, GENERIC_RTYPE_FORMAT},
-	{"not", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001011"), GENERIC_RTYPE, GENERIC_RTYPE_FORMAT},
+	{"not", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001011"), NOT_RTYPE, NOT_RTYPE_FORMAT},
     
     {"slt", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001100"), GENERIC_RTYPE, GENERIC_RTYPE_FORMAT},
 	{"sltu", RTYPE, std::bitset<6>(RTYPE_OP), std::bitset<11>("00000001101"), GENERIC_RTYPE, GENERIC_RTYPE_FORMAT},
