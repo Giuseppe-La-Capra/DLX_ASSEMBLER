@@ -124,6 +124,9 @@ static std::string parse (const std::tuple<std::string,char,std::bitset<6>,std::
         case hasher(NOT_RTYPE_FORMAT):
             sscanf(buffer.c_str(),format.c_str(),&dest,&source1);
             break;
+        case hasher(BRANCHN_IMMEDIATE_FORMAT):
+            sscanf(buffer.c_str(),format.c_str(),&source1,&dest,&immediate);
+            break;
         case hasher(NOP_IMMEDIATE_FORMAT):
             //do nothing
             break;
